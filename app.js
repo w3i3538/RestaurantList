@@ -1,7 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
-const restaurants = require('./restaurant.json')
+const Restaurants = require('./models/restaurant')
 
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
@@ -31,21 +31,35 @@ app.use(express.static('public'))
 
 //設定路由
 app.get('/', (req, res) => {
-    res.render('index', { restaurants: restaurants.results})
+    Restaurants.find()
+        .lean()
+        .then(restaurants => res.render('index', { restaurants }))
+        .catch(err => console.log(err))
+
 })
 
 //設定搜尋路由
-app.get('/search',(req,res)=>{
+app.get('/search', (req, res) => {
     const keyword = req.query.keyword
-    const restaurantFilter = restaurants.results.filter(restaurant=>{
-        return restaurant.name.toLowerCase().includes(keyword.trim().toLowerCase()) || restaurant.name_en.toLowerCase().includes(keyword.trim().toLowerCase())
-    }) 
-    res.render('index', { restaurants: restaurantFilter, keyword: keyword })
+    if (!keyword) {
+        res.redirect('/')
+    }
+    Restaurants.find()
+        .lean()
+        .then(restaurants => {
+            const restaurantFilter = restaurants.filter(restaurant => {
+                return restaurant.name.toLowerCase().includes(keyword.trim().toLowerCase()) || restaurant.name_en.toLowerCase().includes(keyword.trim().toLowerCase())
+            })
+            res.render('index', { restaurants: restaurantFilter, keyword: keyword })
+        })
+        .catch(err => console.log(err))
+
+
 })
 
 //動態路由
-app.get('/restaurants/:restaurant_id', (req,res)=>{
-    const restaurant = restaurants.results.find(restaurant => restaurant.id.toString() === req.params.restaurant_id)
+app.get('/restaurants/:restaurant_id', (req, res) => {
+    const restaurant = Restaurants.find(restaurant => restaurant.id.toString() === req.params.restaurant_id)
 
     res.render('show', { restaurant })
 })
