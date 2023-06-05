@@ -5,8 +5,8 @@ const exphbs = require('express-handlebars')
 const restaurants = require('./restaurant.json')
 
 //引擎設置
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
-app.set('view engine', 'handlebars')
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.set('view engine', 'hbs')
 
 //靜態檔案
 app.use(express.static('public'))
