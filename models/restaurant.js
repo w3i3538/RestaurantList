@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-//建立一筆餐廳資料架構
+//建立餐廳資料架構
 const restaurantSchema = new Schema({
     name: { type: String, required: true },
     name_en: { type: String, required: true },
