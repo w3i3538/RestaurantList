@@ -12,6 +12,8 @@
 * 點擊瀏覽餐廳詳細資料
 * 連接餐廳Google map地址
 * 搜尋特定餐廳名稱
+* 新增、編輯、刪除餐廳資料
+
 
 ### 修正
 
@@ -41,25 +43,32 @@
    $ npm i express@4.18.2
    ```
 
-5. 透過npm安裝4.18.2版本express輸入：
+5. 透過npm安裝3.1.0版本express-handlebars輸入：
 
    ```bash
    $ npm i express-handlebars@3.1.0
    ```
 
-5. 安裝完畢後，繼續輸入，開啟伺服器：
+6. 過npm安裝16.1.4版本的Dotenv和7.2.2版本的mongoose輸入:
+
+   ```bash
+   $ npm i mongoose@7.2.2
+   $ npm i dotenv -D
+   ```
+
+7. 安裝完畢後，繼續輸入，開啟伺服器：
 
    ```bash
    npm run dev
    ```
 
-5. 若看見此行訊息則代表伺服器順利運行，打開瀏覽器進入到以下網址
+8. 若看見此行訊息則代表伺服器順利運行，打開瀏覽器進入到以下網址
 
    ```bash
    Listening on http://localhost:3000
    ```
 
-6. 若欲暫停使用
+9. 若欲暫停使用
 
    ```bash
    ctrl + c
@@ -72,3 +81,7 @@
 - Express-Handlebars 3.1.0
 - Bootstrap 5.2.1
 - Font-awesome 5.8.1
+- Dotenv 16.1.4
+- Body-parser 1.20.2
+- MongoDB
+- mongoose 7.2.2
