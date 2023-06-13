@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const Restaurants = require('./models/restaurant')
+const methodOverride = require('method-override')
 
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
@@ -34,6 +35,7 @@ app.use(express.static('public'))
 //每一個req都會經過bodyParser使用urlencoded解析
 app.use(bodyParser.urlencoded({ extended: true }))
 
+app.use(methodOverride('_method'))
 
 //設定路由
 app.get('/', (req, res) => {
@@ -92,7 +94,7 @@ app.get('/restaurants/:restaurant_id/edit', (req, res) => {
 })
 
 // 更新餐廳
-app.post("/restaurants/:restaurant_id", (req, res) => {
+app.put("/restaurants/:restaurant_id", (req, res) => {
     const { restaurant_id } = req.params;
     return Restaurants.findByIdAndUpdate(restaurant_id, req.body)
         .then(() => res.redirect(`/restaurants/${restaurant_id}`))
@@ -101,7 +103,7 @@ app.post("/restaurants/:restaurant_id", (req, res) => {
 
 
 // 刪除餐廳
-app.post('/restaurants/:restaurant_id/delete', (req, res) => {
+app.delete('/restaurants/:restaurant_id', (req, res) => {
     const { restaurant_id } = req.params
     return Restaurants.findByIdAndDelete(restaurant_id)
         .then(() => res.redirect('/'))
