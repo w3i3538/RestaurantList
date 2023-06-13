@@ -2,9 +2,8 @@ const express = require('express')
 const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
-const Restaurants = require('./models/restaurant')
 const methodOverride = require('method-override')
-
+const routes = require('./routes')
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
@@ -28,7 +27,6 @@ db.once('open', () => {
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 
-
 //靜態檔案
 app.use(express.static('public'))
 
@@ -37,78 +35,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(methodOverride('_method'))
 
-//設定路由
-app.get('/', (req, res) => {
-    Restaurants.find()
-        .lean()
-        .then(restaurants => res.render('index', { restaurants }))
-        .catch(err => console.log(err))
-})
-
-//設定搜尋路由
-app.get('/search', (req, res) => {
-    const keyword = req.query.keyword
-    if (!keyword) {
-        return res.redirect('/')
-    }
-
-    Restaurants.find()
-        .lean()
-        .then(restaurants => {
-            const restaurantFilter = restaurants.filter(restaurant => {
-                return restaurant.name.toLowerCase().includes(keyword.trim().toLowerCase()) || restaurant.name_en.toLowerCase().includes(keyword.trim().toLowerCase())
-            })
-            res.render('index', { restaurants: restaurantFilter, keyword: keyword })
-        })
-        .catch(err => console.log(err))
-})
-
-// 新增餐廳
-app.post('/restaurants', (req, res) => {
-    return Restaurants.create(req.body)
-        .then(() => res.redirect("/"))
-        .catch(err => console.log(err))
-})
-
-// 新增餐廳
-app.get('/restaurants/new', (req, res) => {
-    return res.render("new")
-})
-
-// 瀏覽特定餐廳
-app.get('/restaurants/:restaurant_id', (req, res) => {
-    const { restaurant_id } = req.params
-    return Restaurants.findById(restaurant_id)
-        .lean()
-        .then((restaurant) => res.render('show', { restaurant }))
-        .catch((error) => console.log('error'))
-})
-
-// 編輯餐廳頁面
-app.get('/restaurants/:restaurant_id/edit', (req, res) => {
-    const { restaurant_id } = req.params
-    return Restaurants.findById(restaurant_id)
-        .lean()
-        .then(restaurant => res.render('edit', { restaurant }))
-        .catch(err => console.log(err))
-})
-
-// 更新餐廳
-app.put("/restaurants/:restaurant_id", (req, res) => {
-    const { restaurant_id } = req.params;
-    return Restaurants.findByIdAndUpdate(restaurant_id, req.body)
-        .then(() => res.redirect(`/restaurants/${restaurant_id}`))
-        .catch(error => console.log(error));
-})
-
-
-// 刪除餐廳
-app.delete('/restaurants/:restaurant_id', (req, res) => {
-    const { restaurant_id } = req.params
-    return Restaurants.findByIdAndDelete(restaurant_id)
-        .then(() => res.redirect('/'))
-        .catch((err) => console.log('err'))
-})
+app.use(routes)
 
 //確認伺服器是否開啟
 app.listen(port, () => {
