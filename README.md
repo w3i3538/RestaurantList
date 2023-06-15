@@ -1,6 +1,6 @@
 # 我的餐廳清單
 
-![GITHUB]( ./public/image/Screenshot-2.png "首頁截圖")
+![GITHUB]( ./public/image/Screenshot-3.png "首頁截圖")
 
 ## 介紹
 
