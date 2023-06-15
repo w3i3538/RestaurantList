@@ -1,25 +1,10 @@
 const express = require('express')
 const router = express.Router()
 
+
 const Restaurants = require('../../models/restaurant')
 
-//設定搜尋路由
-router.get('/search', (req, res) => {
-    const keyword = req.query.keyword
-    if (!keyword) {
-        return res.redirect('/')
-    }
 
-    Restaurants.find()
-        .lean()
-        .then(restaurants => {
-            const restaurantFilter = restaurants.filter(restaurant => {
-                return restaurant.name.toLowerCase().includes(keyword.trim().toLowerCase()) || restaurant.name_en.toLowerCase().includes(keyword.trim().toLowerCase())
-            })
-            res.render('index', { restaurants: restaurantFilter, keyword: keyword })
-        })
-        .catch(err => console.log(err))
-})
 
 // 新增餐廳
 router.post('/', (req, res) => {

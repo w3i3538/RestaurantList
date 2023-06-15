@@ -2,7 +2,7 @@
 <div class="container search-bar">
     <div class="search-bar-outer">
         <div class="search-bar-inner">
-            <form action="/search">
+            <form action="/search?keyword={{keyword}}&way={{way}}&sort={{sort}}">
                 <h4 class="mb-2">尋找餐廳：</h4>
                 <div class="input-group">
                     <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類"
@@ -13,8 +13,38 @@
                     </div>
                 </div>
             </form>
-            <div class="text-end">
-                <a href="/restaurants/new"><button class="btn btn-primary">新增餐廳</button></a>
+            <div class="col d-flex justify-content-between">
+                <div class="col-4 mt-3 dropdown">
+                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        {{#if selectedOption}}
+                        {{selectedOption}}
+                        {{else}}
+                        選擇餐廳排序
+                        {{/if}}
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item {{#if (eq selectedOption '使用預設排序')}}active{{/if}}"
+                                href="/search?keyword={{keyword}}&way=0&sort={{sort}}">使用預設排序</a></li>
+                        <li><a class="dropdown-item {{#if (eq selectedOption '按照名稱排序')}}active{{/if}}"
+                                href="/search?keyword={{keyword}}&way=1&sort={{sort}}">按照名稱排序</a></li>
+                        <li><a class="dropdown-item {{#if (eq selectedOption '按照類別排序')}}active{{/if}}"
+                                href="/search?keyword={{keyword}}&way=2&sort={{sort}}">按照類別排序</a></li>
+                        <li><a class="dropdown-item {{#if (eq selectedOption '按照區域排序')}}active{{/if}}"
+                                href="/search?keyword={{keyword}}&way=3&sort={{sort}}">按照區域排序</a></li>
+                    </ul>
+                </div>
+
+                <div class="d-flex flex-row align-items-center mt-3">
+                    <div class="mr-2">
+                        <a class="btn" href="/search?keyword={{keyword}}&way={{way}}&sort=asc" role="button">順序 <i
+                                class="fa-solid fa-backward fa-rotate-270"></i></a>
+                    </div>
+                    <div>
+                        <a class="btn" href="/search?keyword={{keyword}}&way={{way}}&sort=desc" role="button">逆序 <i
+                                class="fa-solid fa-backward fa-rotate-90"></i></a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -47,7 +77,8 @@
                                         class="btn btn-primary btn-detail">Detail</button></a>
                                 <a href="/restaurants/{{this._id}}/edit"><button
                                         class="btn btn-success btn-edit">Edit</button></a>
-                                <form action="/restaurants/{{this._id}}?_method=DELETE" method="POST" style="display: inline">
+                                <form action="/restaurants/{{this._id}}?_method=DELETE" method="POST"
+                                    style="display: inline">
                                     <button class="btn btn-danger btn-delete" type="submit">Delete</button>
                                 </form>
                             </li>

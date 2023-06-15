@@ -9,8 +9,18 @@ if (process.env.NODE_ENV !== 'production') {
 const app = express()
 const port = 3000
 require('./config/mongoose')
+
+const handlebars = exphbs.create({
+    defaultLayout: 'main',
+    extname: '.hbs',
+    helpers: {
+        eq: function (a, b) {
+            return a === b;
+        }
+    }
+})
 //引擎設置
-app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.engine('hbs', handlebars.engine)
 app.set('view engine', 'hbs')
 //靜態檔案
 app.use(express.static('public'))
