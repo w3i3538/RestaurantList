@@ -2,14 +2,17 @@ const express = require('express')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
-const routes = require('./routes')
+
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
-const app = express()
-const port = 3000
-require('./config/mongoose')
 
+const routes = require('./routes')
+
+require('./config/mongoose')
+const app = express()
+const PORT = process.env.PORT
+// set helper
 const handlebars = exphbs.create({
     defaultLayout: 'main',
     extname: '.hbs',
@@ -32,6 +35,6 @@ app.use(methodOverride('_method'))
 app.use(routes)
 
 //確認伺服器是否開啟
-app.listen(port, () => {
-    console.log(`Express is listening on localhost:${port}`)
+app.listen(PORT, () => {
+    console.log(`Express is listening on localhost:${PORT}`)
 })
