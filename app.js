@@ -1,4 +1,5 @@
 const express = require('express')
+const session = require('express-session')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
@@ -25,6 +26,13 @@ const handlebars = exphbs.create({
 //引擎設置
 app.engine('hbs', handlebars.engine)
 app.set('view engine', 'hbs')
+
+app.use(session({
+    secret: 'ThisIsMySecret',
+    resave: false,
+    saveUninitialized: true
+}))
+
 //靜態檔案
 app.use(express.static('public'))
 //每一個req都會經過bodyParser使用urlencoded解析
