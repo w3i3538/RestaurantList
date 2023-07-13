@@ -54,16 +54,13 @@
                 required>{{restaurant.description}}</textarea>
         </div>
         <div class="text-center">
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-success">
                 儲存修改
             </button>
-            <a href="/">
-                <button type="button" class="btn btn-outline-secondary">
-                    返回首頁
-                </button>
-            </a>
+            <a href="/"><button class="btn btn-secondary btn-home">返回首頁</button></a>
+            <a href="/restaurants/{{restaurant._id}}"><button class="btn btn-primary btn-detail">回詳細頁</button></a>
             {{! 使用type="reset" 可以清除/還原輸入 }}
-            <button type="reset" class="btn btn-outline-danger">還原輸入</button>
+            <button type="reset" class="btn btn-danger">還原輸入</button>
         </div>
     </form>
 </div>
