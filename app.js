@@ -24,7 +24,7 @@ const handlebars = exphbs.create({
         }
     }
 })
-// 引擎設置
+// set engine
 app.engine('hbs', handlebars.engine)
 app.set('view engine', 'hbs')
 
@@ -34,18 +34,25 @@ app.use(session({
     saveUninitialized: true
 }))
 
-// 靜態檔案
+
 app.use(express.static('public'))
 // 每一個req都會經過bodyParser使用urlencoded解析
 app.use(bodyParser.urlencoded({ extended: true }))
-// 方法覆蓋
+
 app.use(methodOverride('_method'))
 // 呼叫 Passport 函式並傳入 app (在路由之前)
 usePassport(app)
-// 路由
+
+app.use((req, res, next) => {
+    // console.log(req.user) 
+    res.locals.isAuthenticated = req.isAuthenticated()
+    res.locals.user = req.user
+    next()
+})
+
 app.use(routes)
 
-// 確認伺服器是否開啟
+
 app.listen(PORT, () => {
     console.log(`Express is listening on localhost:${PORT}`)
 })
