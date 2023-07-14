@@ -32,7 +32,7 @@ router.get('/register', (req, res) => {
 })
 
 router.post('/register', (req, res) => {
-    const { email, password, confirmPassword } = req.body
+    const { name, email, password, confirmPassword } = req.body
     const errors = []
     if (!email || !password || !confirmPassword) {
         errors.push({ message: '必填欄位不可為空。' })
@@ -55,6 +55,7 @@ router.post('/register', (req, res) => {
             errors.push({ message: '這個 Email 已經註冊過了。' })
             return res.render('register', {
                 errors,
+                name,
                 email,
                 password,
                 confirmPassword
@@ -64,10 +65,11 @@ router.post('/register', (req, res) => {
             .genSalt(10)
             .then(salt => bcrypt.hash(password, salt))
             .then(hash => User.create({
+                name,
                 email,
                 password: hash 
             }))
-            .then(() => res.redirect('/'))
+            .then(() => res.redirect('/users/login'))
             .catch(err => console.log(err))
     })
         .catch(err => console.log(err))
