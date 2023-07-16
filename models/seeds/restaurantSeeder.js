@@ -6,30 +6,9 @@ if (process.env.NODE_ENV !== 'production') {
 const Restaurant = require('../restaurant')
 const User = require('../user')
 const restaurantList = require("../../restaurant.json").results
+const SEED_USERs = require("../../seed-users.json")
 
 const db = require('../../config/mongoose')
-
-const SEED_USERs = [{
-    name: 'user1',
-    email: 'user1@example.com',
-    password: '12345678',
-    restaurantId: [1, 2, 3]
-}, {
-    name: 'user2',
-    email: 'user2@example.com',
-    password: '12345678',
-    restaurantId: [4, 5, 6]
-}, {
-    name: 'aaa',
-    email: 'aaa@aaa.aaa',
-    password: 'aaaa',
-    restaurantId: [1, 3, 5, 7]
-}, {
-    name: 'bbb',
-    email: 'bbb@bbb.bbb',
-    password: 'bbbb',
-    restaurantId: [2, 4, 6, 8]
-}]
 
 db.once("open", () => {
     // 建立非同步函式 方便控管流程
